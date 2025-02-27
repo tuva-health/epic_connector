@@ -1,0 +1,14 @@
+version: 2
+
+models:
+## Epic Stage
+
+  - name: epic_stage__condition_encounter_dx
+    config:
+      schema: epic_stage
+      alias: condition_encounter_dx
+      
+  - name: epic_stage__condition_problem_list
+    config:
+      schema: epic_stage
+      alias: condition_problem_list

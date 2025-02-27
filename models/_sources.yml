@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: epic  # This should match the schema name in your database where the table exists
+    database:  "{{ var('input_database') }}"
+    schema:  "{{ var('input_schema') }}"
+    tables:
+      - name: clarity_eap
+      - name: clarity_edg
+      - name: clarity_loc
+      - name: clarity_ser
+      - name: pat_enc
+      - name: pat_enc_dx
+      - name: patient
+      - name: order_proc
+      - name: order_proc_2
+      - name: order_results
+      - name: problem_list
