@@ -9,10 +9,17 @@ sources:
       - name: clarity_edg
       - name: clarity_loc
       - name: clarity_ser
-      - name: pat_enc
-      - name: pat_enc_dx
-      - name: patient
+      - name: clarity_ser_spec
       - name: order_proc
       - name: order_proc_2
       - name: order_results
+      - name: pat_enc
+      - name: pat_enc_dx
+      - name: patient
+      - name: patient_race
       - name: problem_list
+      - name: zc_county
+      - name: zc_patient_race
+      - name: zc_sex
+      - name: zc_specialty
+      - name: zc_state
