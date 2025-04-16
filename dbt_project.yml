@@ -5,7 +5,7 @@ version: '0.0.1'
 profile: 'default'
 
 vars:
-  input_database: tuva_data
+  input_database: tuva_demo
   input_schema: epic
   
   ## This configuration controls which models are executed
