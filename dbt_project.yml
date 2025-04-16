@@ -1,5 +1,6 @@
 name: 'epic_connector'
-version: '0.0.1'
+version: '0.1.2'
+config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
 profile: 'default'
@@ -8,9 +9,27 @@ vars:
   input_database: tuva_demo
   input_schema: epic
   
-  ## This configuration controls which models are executed
-  # in The Tuva Project.  
+  ## validate that all seeds were populated correctly
+  error_empty_seeds: true
+
+  ## populates the tuva last run columns
+  tuva_last_run: '{{ run_started_at.astimezone(modules.pytz.timezone("UTC")) }}'
+
+
+  ## sets tuva to the correct model build types
   clinical_enabled: true
+
+models:
+  epic_connector:
+    staging:
+      +materialized: ephemeral
+      +schema: epic_staging
+    intermediate:
+      +materialized: view
+      +schema: epic_intermediate
+    final:
+      +materialized: table
+      +schema: epic_final
 
 # These configurations specify where dbt should look for different types of files.
 # The `model-paths` config, for example, states that models in this project can be
@@ -26,3 +45,7 @@ target-path: "target"  # directory which will store compiled SQL files
 clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
+
+dispatch:
+  - macro_namespace: 'dbt'
+    search_order: ['the_tuva_project', 'dbt']

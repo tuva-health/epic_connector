@@ -5,8 +5,6 @@ models:
   ### staging:
   - name: stg_epic__clarity_eap
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       tests:
         - unique:
@@ -16,8 +14,6 @@ models:
       
   - name: stg_epic__clarity_edg
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       tests:
         - unique:
@@ -27,8 +23,6 @@ models:
       
   - name: stg_epic__clarity_loc
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       tests:
         - unique:
@@ -38,8 +32,6 @@ models:
       
   - name: stg_epic__clarity_medication
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       tests:
         - unique:
@@ -49,166 +41,114 @@ models:
 
   - name: stg_epic__clarity_ser_spec
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       
   - name: stg_epic__clarity_ser
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       
   - name: stg_epic__hsp_account_cpt_codes
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       
   - name: stg_epic__hsp_account_px_list
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       
   - name: stg_epic__hsp_account
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
 
   - name: stg_epic__order_proc
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       
   - name: stg_epic__order_proc_2
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       
   - name: stg_epic__order_med
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       
   - name: stg_epic__order_medinfo
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       
   - name: stg_epic__order_results
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
 
   - name: stg_epic__pat_enc_dx
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
 
   - name: stg_epic__pat_enc_hsp
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
 
   - name: stg_epic__pat_enc
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
 
   - name: stg_epic__patient_race
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
 
   - name: stg_epic__patient
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
 
   - name: stg_epic__problem_list
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
 
   - name: stg_epic__zc_admin_route
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
 
   - name: stg_epic__zc_county
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
 
   - name: stg_epic__zc_patient_race
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       
   - name: stg_epic__zc_sex
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       
   - name: stg_epic__zc_specialty
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
       
   - name: stg_epic__zc_state
     config:
-      materialized: ephemeral
-      schema: epic_stage
       tags: epic
 
   ### intermediate:
-  - name: int_condition_encounter_dx
+  - name: int_clinical_diagnoses
     description: >
       Includes encounter clinical diagnoses. These are added to the patient encounter at the time of the encounter.
       There may be items added to facilitate patient workflows like admission and discharge.
     config:
-      materialized: view
-      schema: epic_stage
       tags: epic
       
-  - name: int_condition_problem_list
+  - name: int_problem_lists
     config:
-      materialized: view
-      schema: epic_stage
       tags: epic
       description: >
         Includes patient problem list diagnoses. These are added to the patient problem list at the time of the encounter.
       
-  - name: int_procedure_hsp_account_cpt_codes
+  - name: int_cpt_procedures
     config:
-      materialized: view
-      schema: epic_stage
       tags: epic
       description: >
         Includes billed icd procedure codes for hospital accounts.
       
-  - name: int_procedure_hsp_account_px_list
+  - name: int_icd_procedures
     config:
-      materialized: view
-      schema: epic_stage
       tags: epic
       description: >
         Includes billed procedure codes for hospital accounts.
@@ -216,16 +156,12 @@ models:
   ### final:
   - name: condition
     config:
-      schema: epic_final
-      tags: epic
       description: >
         This model is a union of the condition_encounter_dx and condition_problem_list models. It includes all clinical diagnoses
         from the encounter and problem list. The model also includes the patient_id, encounter_id, and diagnosis code.
 
   - name: encounter
     config:
-      schema: epic_final
-      tags: input_layer
       description: >
         This model includes all encounters for patients in the epic database. The model is used to identify patients with specific encounters
         for research and clinical purposes. The model includes the patient_id, encounter_id, and encounter date.
@@ -237,15 +173,23 @@ models:
 
   - name: lab_result
     config:
-      schema: epic_final
-      tags: epic
       description: >
         This model includes all lab results for patients in the epic database. The model is used to identify patients with specific lab results
 
+  - name: location
+    config:
+      description: ''
+
+  - name: medication
+    config:
+      description: ''
+
+  - name: observation
+    config:
+      description: ''
+
   - name: patient
     config:
-      schema: epic_final
-      tags: epic
       description: >
         This model includes all patients in the epic database.
       tests:
@@ -254,10 +198,12 @@ models:
         - not_null:
             column_name: patient_id
 
+  - name: practitioner
+    config:
+      description: ''
+
   - name: procedure
     config:
-      schema: epic_final
-      tags: epic
       description: >
         This model is a union of the procedure_hsp_account_cpt_codes and procedure_hsp_account_px_list models. It includes all billed procedure codes
         from the hospital accounts.
