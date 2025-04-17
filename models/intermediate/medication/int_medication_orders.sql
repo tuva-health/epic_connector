@@ -33,5 +33,5 @@ from {{ ref('stg_epic__order_med') }} as om
     on om_info.medication_id = med.medication_id
     left outer join {{ ref('stg_epic__zc_admin_route') }} as zc_admin_route
     on zc_admin_route.route_c = med.route_c
-where om.is_pending_ord_yn <> 'Y'
-    and om.order_status_c <> 4
+where om.is_pending_ord_yn <> 'Y' -- Exclude pending orders as these are not done yet.
+    and om.order_status_c <> 4 -- Exclude Canceled. Check if there are other org-specific values you'd want to exclude.

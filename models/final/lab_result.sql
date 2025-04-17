@@ -1,5 +1,6 @@
 -- Need a filter on order_type_c to get only lab results. This may be "LAB", but may include other org-specific values. e.g. Microbiology is usually under a different type.
 -- May want to also add a filter to only get completed results.
+-- Alternatively, you can use clarity_eap to filter to labs which may be more accurate.
 -- Note that order_result.ord_num_value is a numeric representation on the result. This may be desired instead of the text value
 -- however, be aware that in cases where the result is non-numeric, this field will show 9999999.
 
@@ -41,3 +42,4 @@ from {{ ref('stg_epic__order_results') }} as order_result
     on order_proc.order_proc_id = order_proc_2.order_proc_id
     left outer join {{ ref('stg_epic__clarity_eap') }} as eap 
     on order_proc.proc_id = eap.proc_id
+where 1=1 -- Add filter to only labs here
