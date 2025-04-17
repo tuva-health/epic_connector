@@ -1,14 +1,214 @@
 version: 2
 
 models:
-## Epic Stage
 
-  - name: epic_stage__condition_encounter_dx
+  ### staging:
+  - name: stg_epic__clarity_eap
     config:
-      schema: epic_stage
-      alias: condition_encounter_dx
+      tags: epic
+      tests:
+        - unique:
+            column_name: proc_id
+        - not_null:
+            column_name: proc_id
       
-  - name: epic_stage__condition_problem_list
+  - name: stg_epic__clarity_edg
     config:
-      schema: epic_stage
-      alias: condition_problem_list
+      tags: epic
+      tests:
+        - unique:
+            column_name: dx_id
+        - not_null:
+            column_name: dx_id
+      
+  - name: stg_epic__clarity_loc
+    config:
+      tags: epic
+      tests:
+        - unique:
+            column_name: loc_id
+        - not_null:
+            column_name: loc_id
+      
+  - name: stg_epic__clarity_medication
+    config:
+      tags: epic
+      tests:
+        - unique:
+            column_name: medication_id
+        - not_null:
+            column_name: medication_id
+
+  - name: stg_epic__clarity_ser_spec
+    config:
+      tags: epic
+      
+  - name: stg_epic__clarity_ser
+    config:
+      tags: epic
+      
+  - name: stg_epic__hsp_account_cpt_codes
+    config:
+      tags: epic
+      
+  - name: stg_epic__hsp_account_px_list
+    config:
+      tags: epic
+      
+  - name: stg_epic__hsp_account
+    config:
+      tags: epic
+
+  - name: stg_epic__order_proc
+    config:
+      tags: epic
+      
+  - name: stg_epic__order_proc_2
+    config:
+      tags: epic
+      
+  - name: stg_epic__order_med
+    config:
+      tags: epic
+      
+  - name: stg_epic__order_medinfo
+    config:
+      tags: epic
+      
+  - name: stg_epic__order_results
+    config:
+      tags: epic
+
+  - name: stg_epic__pat_enc_dx
+    config:
+      tags: epic
+
+  - name: stg_epic__pat_enc_hsp
+    config:
+      tags: epic
+
+  - name: stg_epic__pat_enc
+    config:
+      tags: epic
+
+  - name: stg_epic__patient_race
+    config:
+      tags: epic
+
+  - name: stg_epic__patient
+    config:
+      tags: epic
+
+  - name: stg_epic__problem_list
+    config:
+      tags: epic
+
+  - name: stg_epic__zc_admin_route
+    config:
+      tags: epic
+
+  - name: stg_epic__zc_county
+    config:
+      tags: epic
+
+  - name: stg_epic__zc_patient_race
+    config:
+      tags: epic
+      
+  - name: stg_epic__zc_sex
+    config:
+      tags: epic
+      
+  - name: stg_epic__zc_specialty
+    config:
+      tags: epic
+      
+  - name: stg_epic__zc_state
+    config:
+      tags: epic
+
+  ### intermediate:
+  - name: int_clinical_diagnoses
+    description: >
+      Includes encounter clinical diagnoses. These are added to the patient encounter at the time of the encounter.
+      There may be items added to facilitate patient workflows like admission and discharge.
+    config:
+      tags: epic
+      
+  - name: int_problem_lists
+    config:
+      tags: epic
+      description: >
+        Includes patient problem list diagnoses. These are added to the patient problem list at the time of the encounter.
+      
+  - name: int_cpt_procedures
+    config:
+      tags: epic
+      description: >
+        Includes billed icd procedure codes for hospital accounts.
+      
+  - name: int_icd_procedures
+    config:
+      tags: epic
+      description: >
+        Includes billed procedure codes for hospital accounts.
+
+  ### final:
+  - name: condition
+    config:
+      description: >
+        This model is a union of the condition_encounter_dx and condition_problem_list models. It includes all clinical diagnoses
+        from the encounter and problem list. The model also includes the patient_id, encounter_id, and diagnosis code.
+
+  - name: encounter
+    config:
+      description: >
+        This model includes all encounters for patients in the epic database. The model is used to identify patients with specific encounters
+        for research and clinical purposes. The model includes the patient_id, encounter_id, and encounter date.
+      tests:
+        - unique:
+            column_name: encounter_id
+        - not_null:
+            column_name: encounter_id
+
+  - name: lab_result
+    config:
+      description: >
+        This model includes all lab results for patients in the epic database. The model is used to identify patients with specific lab results
+
+  - name: location
+    config:
+      description: ''
+
+  - name: medication
+    config:
+      description: ''
+
+  - name: observation
+    config:
+      description: ''
+
+  - name: patient
+    config:
+      description: >
+        This model includes all patients in the epic database.
+      tests:
+        - unique:
+            column_name: patient_id
+        - not_null:
+            column_name: patient_id
+
+  - name: practitioner
+    config:
+      description: ''
+
+  - name: procedure
+    config:
+      description: >
+        This model is a union of the procedure_hsp_account_cpt_codes and procedure_hsp_account_px_list models. It includes all billed procedure codes
+        from the hospital accounts.
+      tests:
+        - unique:
+            column_name: procedure_id
+        - not_null:
+            column_name: procedure_id

@@ -1,23 +1,32 @@
 version: 2
 
 sources:
-  - name: epic  # This should match the schema name in your database where the table exists
+  - name: epic  
     database:  "{{ var('input_database') }}"
     schema:  "{{ var('input_schema') }}"
     tables:
       - name: clarity_eap
       - name: clarity_edg
       - name: clarity_loc
+      - name: clarity_medication
       - name: clarity_ser
       - name: clarity_ser_spec
-      - name: order_proc
+      - name: hsp_account_cpt_codes
+      - name: hsp_account_dx_list
+      - name: hsp_account_px_list
+      - name: hsp_account
+      - name: order_med
+      - name: order_medinfo
       - name: order_proc_2
+      - name: order_proc
       - name: order_results
-      - name: pat_enc
       - name: pat_enc_dx
+      - name: pat_enc_hsp
+      - name: pat_enc
       - name: patient
       - name: patient_race
       - name: problem_list
+      - name: zc_admin_route
       - name: zc_county
       - name: zc_patient_race
       - name: zc_sex
